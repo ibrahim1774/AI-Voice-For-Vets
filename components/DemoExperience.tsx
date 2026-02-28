@@ -242,6 +242,11 @@ export default function DemoExperience({
         )}
       </div>
 
+      {/* Sample disclaimer */}
+      <p className="text-center font-sans text-xs text-red-400/80 mb-3 shrink-0 max-w-md mx-auto leading-relaxed">
+        This is a sample receptionist based on limited info. Book a call and we&apos;ll fully customize it to your practice.
+      </p>
+
       {/* Active call indicator */}
       {callStatus === "active" && (
         <div className="flex justify-center mb-3 shrink-0">
