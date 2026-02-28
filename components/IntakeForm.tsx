@@ -4,14 +4,24 @@ import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import LoadingOverlay from "./LoadingOverlay";
 
+const GOALS = [
+  "Book Appointments",
+  "Answer Patient Questions",
+  "Handle Dental Emergencies",
+  "Recall & Reactivation",
+  "Full Front Desk Coverage",
+];
+
 interface FormData {
   practiceName: string;
   phoneNumber: string;
+  goal: string;
 }
 
 interface FormErrors {
   practiceName?: string;
   phoneNumber?: string;
+  goal?: string;
 }
 
 const MINIMUM_LOADING_TIME = 4500;
@@ -21,6 +31,7 @@ export default function IntakeForm() {
   const [formData, setFormData] = useState<FormData>({
     practiceName: "",
     phoneNumber: "",
+    goal: "",
   });
   const [errors, setErrors] = useState<FormErrors>({});
   const [isLoading, setIsLoading] = useState(false);
@@ -36,6 +47,10 @@ export default function IntakeForm() {
     const phoneDigits = formData.phoneNumber.replace(/\D/g, "");
     if (phoneDigits.length < 10) {
       newErrors.phoneNumber = "Enter a valid phone number";
+    }
+
+    if (!formData.goal) {
+      newErrors.goal = "Please select a goal";
     }
 
     setErrors(newErrors);
@@ -63,6 +78,7 @@ export default function IntakeForm() {
           body: JSON.stringify({
             practiceName: formData.practiceName,
             phoneNumber: formData.phoneNumber,
+            goal: formData.goal,
           }),
         }).catch(() => {}),
         new Promise((resolve) => setTimeout(resolve, MINIMUM_LOADING_TIME)),
@@ -90,7 +106,7 @@ export default function IntakeForm() {
   }
 
   function handleChange(
-    e: React.ChangeEvent<HTMLInputElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
