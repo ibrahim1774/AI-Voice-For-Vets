@@ -23,7 +23,7 @@ const STATS = [
     stat: "24/7",
     headline: "coverage that never sleeps",
     detail:
-      "PrimeVoice answers instantly, every time. It knows your business, books appointments, takes messages, and never misses a shift. Nights, weekends, holidays — always on.",
+      "PrimeHub AI answers instantly, every time. It knows your business, books appointments, takes messages, and never misses a shift. Nights, weekends, holidays — always on.",
   },
 ];
 

@@ -26,6 +26,13 @@ export default function HeroSection() {
         style={{ boxShadow: "0 0 15px rgba(201, 168, 76, 0.2)" }}
       />
 
+      {/* Logo */}
+      <div className="absolute top-4 left-5 z-20 md:top-6 md:left-8">
+        <span className="font-serif text-lg font-bold text-white md:text-xl">
+          PrimeHub <span className="text-gold">AI</span>
+        </span>
+      </div>
+
       {/* === CONTENT === */}
       <div className="relative z-10 mx-auto max-w-4xl w-full text-center">
         {/* Main headline */}
