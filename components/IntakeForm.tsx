@@ -131,7 +131,7 @@ export default function IntakeForm() {
             <input
               type="tel"
               name="phoneNumber"
-              placeholder="Practice Phone Number"
+              placeholder="Your Mobile Number"
               value={formData.phoneNumber}
               onChange={handleChange}
               className={inputClasses}

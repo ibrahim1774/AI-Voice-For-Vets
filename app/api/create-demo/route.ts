@@ -98,7 +98,7 @@ Return ONLY the system prompt text. No markdown formatting, no explanations, no 
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        name: `PrimeVoice Dental Demo - ${body.practiceName}`,
+        name: `Demo - ${body.practiceName}`.slice(0, 40),
         model: {
           provider: "anthropic",
           model: "claude-sonnet-4-5-20250929",
