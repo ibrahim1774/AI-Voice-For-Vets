@@ -5,16 +5,16 @@ const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
 });
 
-const DENTAL_KNOWLEDGE = {
-  primaryGoal: "Book a patient appointment",
+const VET_KNOWLEDGE = {
+  primaryGoal: "Book a pet appointment",
   keyInfo:
-    "New patient or existing, insurance provider and member ID, reason for visit (cleaning, checkup, toothache, cosmetic consultation, emergency), preferred date/time, any urgency or pain level",
+    "Pet name and species (dog, cat, other), breed and age, new or existing client, reason for visit (wellness exam, vaccinations, illness, injury, dental cleaning, spay/neuter), preferred date/time, any urgency or symptoms",
   scenarios:
-    "New patient wanting to book (cleaning, comprehensive exam), existing patient needing follow-up or routine cleaning, insurance verification questions, emergency/urgent visits (toothache, broken tooth, swelling), cosmetic consultations (whitening, veneers, Invisalign), cancellation or rescheduling requests",
+    "New client wanting to register and book first visit, existing client needing wellness exam or vaccinations, sick pet or injury (vomiting, limping, lethargy), emergency or after-hours urgent care, spay/neuter or dental cleaning scheduling, prescription refill requests, boarding or grooming inquiries",
   pricingBehavior:
-    'Say "we accept most major dental insurance plans — our front desk team will verify your specific coverage and any copay before your visit"',
+    'Say "our exam fees and procedure costs vary depending on your pet\'s needs — our team will provide a detailed estimate before any treatment. We accept most pet insurance plans"',
   schedulingNotes:
-    "Differentiate between new patient appointments (longer slots for X-rays and comprehensive exam) and existing patient visits (routine cleanings, follow-ups), ask about morning or afternoon preference",
+    "Differentiate between wellness visits (routine), sick visits (may need same-day), and surgical procedures (require pre-op instructions). Ask about the pet's symptoms to gauge urgency",
 };
 
 interface CreateDemoRequest {
@@ -52,39 +52,39 @@ export async function POST(request: NextRequest) {
 
     const primaryGoal = body.goal;
 
-    // Step 1: Generate custom dental receptionist system prompt with Claude
+    // Step 1: Generate custom veterinary receptionist system prompt with Claude
     const claudeResponse = await anthropic.messages.create({
       model: "claude-sonnet-4-5-20250929",
       max_tokens: 1024,
       messages: [
         {
           role: "user",
-          content: `You are an expert at creating AI receptionist system prompts for dental practices. Generate a custom system prompt for this dental practice:
+          content: `You are an expert at creating AI receptionist system prompts for veterinary practices. Generate a custom system prompt for this veterinary practice:
 
-Dental Practice Name: "${body.practiceName}"
+Veterinary Practice Name: "${body.practiceName}"
 
-This receptionist answers phone calls for this dental practice. Here is what you need to know:
+This receptionist answers phone calls for this veterinary practice. Here is what you need to know:
 
 Primary goal selected by the practice: ${primaryGoal}
-Information to gather from callers: ${DENTAL_KNOWLEDGE.keyInfo}
-Common caller scenarios to handle: ${DENTAL_KNOWLEDGE.scenarios}
-How to handle pricing questions: ${DENTAL_KNOWLEDGE.pricingBehavior}
-Scheduling notes: ${DENTAL_KNOWLEDGE.schedulingNotes}
+Information to gather from callers: ${VET_KNOWLEDGE.keyInfo}
+Common caller scenarios to handle: ${VET_KNOWLEDGE.scenarios}
+How to handle pricing questions: ${VET_KNOWLEDGE.pricingBehavior}
+Scheduling notes: ${VET_KNOWLEDGE.schedulingNotes}
 
 The system prompt you generate must:
 
 1. Greet callers warmly using the practice name: "${body.practiceName}"
-2. Sound like a real human dental receptionist — use contractions, casual phrasing, and a friendly, reassuring tone
-3. Follow the dental-specific booking flow above — ask the right questions in a natural conversational order, not all at once
+2. Sound like a real human veterinary receptionist — use contractions, casual phrasing, and a friendly, reassuring tone
+3. Follow the veterinary-specific booking flow above — ask the right questions in a natural conversational order, not all at once
 4. Ask ONE question at a time, wait for the answer, then ask the next
 5. Always work toward the primary goal: "${primaryGoal}" — prioritize this above all else in every conversation
-6. Handle the common dental scenarios listed above naturally — be especially empathetic with patients in pain or dental emergencies
+6. Handle the common veterinary scenarios listed above naturally — be especially empathetic with worried pet owners or pet emergencies
 7. Use the pricing guidance above when pricing comes up — never make up specific prices
 8. Keep every response to 1-3 sentences max — this is a phone call, not an email
 9. If the caller asks something outside your knowledge, say "Let me have someone from our team get back to you on that — can I grab your name and number?"
 10. Always capture the caller's name and callback number before ending the call
 11. Never mention being AI unless directly asked
-12. Never fabricate information about the practice — don't make up dentist names, office hours, or specific services not mentioned
+12. Never fabricate information about the practice — don't make up veterinarian names, office hours, or specific services not mentioned
 
 Return ONLY the system prompt text. No markdown formatting, no explanations, no quotation marks wrapping it.`,
         },
@@ -100,7 +100,7 @@ Return ONLY the system prompt text. No markdown formatting, no explanations, no 
       throw new Error("Failed to generate system prompt");
     }
 
-    // Step 2: Create Vapi assistant with the custom dental prompt
+    // Step 2: Create Vapi assistant with the custom veterinary prompt
     const vapiResponse = await fetch("https://api.vapi.ai/assistant", {
       method: "POST",
       headers: {
@@ -125,36 +125,33 @@ Return ONLY the system prompt text. No markdown formatting, no explanations, no 
           model: "nova-2",
           language: "en-US",
           keywords: [
-            "dental:2",
-            "dentist:2",
-            "cleaning:2",
+            "veterinary:2",
+            "vet:2",
+            "vaccination:2",
+            "vaccine:2",
+            "spay:2",
+            "neuter:2",
+            "feline:2",
+            "canine:2",
             "checkup:2",
-            "toothache:2",
-            "cavity:2",
-            "filling:2",
-            "crown:2",
-            "root canal:2",
-            "extraction:2",
-            "Invisalign:2",
-            "veneers:2",
-            "whitening:2",
-            "braces:2",
-            "orthodontics:2",
-            "periodontal:2",
-            "gingivitis:2",
-            "implant:2",
-            "dentures:2",
+            "heartworm:2",
+            "flea:2",
+            "tick:2",
+            "rabies:2",
+            "parvo:2",
+            "distemper:2",
+            "microchip:2",
+            "dental cleaning:2",
+            "surgery:2",
             "X-ray:2",
-            "fluoride:2",
-            "hygienist:2",
-            "copay:2",
-            "PPO:2",
-            "HMO:2",
-            "Delta Dental:2",
-            "Cigna:2",
-            "Aetna:2",
-            "MetLife:2",
-            "Guardian:2",
+            "bloodwork:2",
+            "urinalysis:2",
+            "deworming:2",
+            "boarding:2",
+            "grooming:2",
+            "puppy:2",
+            "kitten:2",
+            "exotic:2",
           ],
         },
         firstMessage: `Thanks for calling ${body.practiceName}, how can I help you today?`,

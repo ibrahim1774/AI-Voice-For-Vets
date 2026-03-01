@@ -3,15 +3,15 @@ import ScrollReveal from "./ScrollReveal";
 const STATS = [
   {
     stat: "40%",
-    headline: "of calls to contractors go unanswered",
+    headline: "of calls to veterinary clinics go unanswered",
     detail:
-      "The average contractor misses nearly half of all incoming calls. Each one of those could be a $2,000, $5,000, or even $10,000 job — gone to your competitor in seconds.",
+      "The average veterinary clinic misses nearly half of all incoming calls. Each one of those could be a $500, $1,000, or even $5,000 surgery — gone to your competitor in seconds.",
   },
   {
     stat: "80%",
     headline: "of callers won't leave a voicemail",
     detail:
-      "Your voicemail isn't cutting it. Eight out of ten callers will hang up and call the next contractor on the list. By the time you call back, they've already booked someone else.",
+      "Your voicemail isn't cutting it. Eight out of ten callers will hang up and call the next veterinary clinic on the list. By the time you call back, they've already booked someone else.",
   },
   {
     stat: "$500",
@@ -23,7 +23,7 @@ const STATS = [
     stat: "24/7",
     headline: "coverage that never sleeps",
     detail:
-      "Dental PrimeHub AI answers instantly, every time. It knows your business, books appointments, takes messages, and never misses a shift. Nights, weekends, holidays — always on.",
+      "Vet PrimeHub AI answers instantly, every time. It knows your business, books appointments, takes messages, and never misses a shift. Nights, weekends, holidays — always on.",
   },
 ];
 
